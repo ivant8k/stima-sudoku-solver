@@ -1,65 +1,50 @@
-# main.py (Diperbarui untuk alur kerja 3-lapis)
-
 import time
 from utils import load_puzzles_from_file, print_board
 from solver_logic import LogicSolver
 from solver_backtracking import BacktrackingSolver
 
 def run_experiment(puzzles):
-    """Fungsi untuk menjalankan seluruh rangkaian eksperimen tiga-lapis."""
+    """
+    Fungsi untuk menjalankan perbandingan langsung antara
+    Solver Logika Advanced dan Solver Backtracking.
+    """
     if not puzzles:
         return
 
     for name, board in puzzles.items():
-        print(f"\n{'='*15} MENGUJI PUZZLE: {name.upper()} {'='*15}")
+        print(f"\n{'='*20} MENGUJI PUZZLE: {name.upper()} {'='*20}")
         print("Papan Awal:")
         print_board(board)
         
-        current_board = [row[:] for row in board]
+        print("\n--- Hasil Solver Logika-Heuristik (Advanced) ---")
+        board_for_logic = [row[:] for row in board]
+        advanced_techniques = {'singles', 'naked_pairs', 'pointing_pairs', 'xwing'}
+        logic_solver = LogicSolver(board_for_logic, techniques=advanced_techniques)
         
-        # === TAHAP 1: SOLVER LOGIKA SEDERHANA ===
-        print("\n--- Tahap 1: Hasil Solver Logika Sederhana (Singles) ---")
-        simple_techniques = {'singles'}
-        simple_solver = LogicSolver([row[:] for row in current_board], techniques=simple_techniques)
-        start_time = time.perf_counter()
-        status_simple, steps_simple = simple_solver.solve()
-        duration_simple = (time.perf_counter() - start_time) * 1000
+        start_time_logic = time.perf_counter()
+        status_logic, steps_logic = logic_solver.solve()
+        duration_logic = (time.perf_counter() - start_time_logic) * 1000
         
-        print(f"Status: {status_simple}")
-        print_board(simple_solver.board)
-        print(f"Waktu: {duration_simple:.4f} ms | Langkah: {steps_simple:,} (estimasi)")
-        current_board = simple_solver.board # Perbarui papan untuk tahap selanjutnya
+        print(f"Status: {status_logic}")
+        print_board(logic_solver.board)
+        print(f"Waktu: {duration_logic:.4f} ms | Langkah: {steps_logic:,} (estimasi eliminasi kandidat)")
 
-        # === TAHAP 2: SOLVER LOGIKA ADVANCED (JIKA PERLU) ===
-        if status_simple == "Macet":
-            print("\n--- Tahap 2: Hasil Solver Logika Advanced (Semua Heuristik) ---")
-            advanced_techniques = {'singles', 'naked_pairs', 'pointing_pairs', 'xwing'}
-            advanced_solver = LogicSolver([row[:] for row in current_board], techniques=advanced_techniques)
-            start_time = time.perf_counter()
-            status_advanced, steps_advanced = advanced_solver.solve()
-            duration_advanced = (time.perf_counter() - start_time) * 1000
-
-            print(f"Status: {status_advanced}")
-            print_board(advanced_solver.board)
-            print(f"Waktu: {duration_advanced:.4f} ms | Langkah: {steps_advanced:,} (estimasi)")
-            current_board = advanced_solver.board # Perbarui papan lagi
-
-        # === TAHAP 3: SOLVER BACKTRACKING (JIKA PERLU) ===
-        # Cek apakah papan sudah terpecahkan setelah semua logika
-        is_solved = all(all(cell != 0 for cell in row) for row in current_board)
-
-        if not is_solved:
-            print("\n--- Tahap 3: Melanjutkan dengan Solver Backtracking ---")
-            backtrack_solver = BacktrackingSolver([row[:] for row in current_board])
-            start_time = time.perf_counter()
-            solved = backtrack_solver.solve()
-            duration_backtrack = (time.perf_counter() - start_time) * 1000
-            
-            print(f"Status: {'Terpecahkan' if solved else 'Tidak Dapat Dipecahkan'}")
-            print_board(backtrack_solver.board)
-            print(f"Waktu: {duration_backtrack:.4f} ms | Langkah: {backtrack_solver.recursion_steps:,} pemanggilan rekursif")
+        print("\n--- Hasil Solver Backtracking (Murni) ---")
+        board_for_backtrack = [row[:] for row in board]
+        
+        # Inisialisasi solver dengan batas waktu 5 detik dan 20 juta langkah
+        backtrack_solver = BacktrackingSolver(board_for_backtrack, time_limit_sec=5, step_limit=20_000_000)
+        
+        start_time_backtrack = time.perf_counter()
+        status_backtrack = backtrack_solver.solve()
+        duration_backtrack = (time.perf_counter() - start_time_backtrack) * 1000
+        
+        print(f"Status: {status_backtrack}")
+        print_board(backtrack_solver.board)
+        print(f"Waktu: {duration_backtrack:.4f} ms | Langkah: {backtrack_solver.recursion_steps:,} pemanggilan rekursif")
+        
+        print(f"{'='*70}")
             
 if __name__ == "__main__":
-    # Ganti "puzzles.txt" dengan nama file Anda jika berbeda
     all_puzzles = load_puzzles_from_file("../test/puzzles.txt") 
     run_experiment(all_puzzles)

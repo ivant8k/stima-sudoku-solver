@@ -1,5 +1,3 @@
-# solver_logic.py (Diperbarui untuk mendukung berbagai teknik)
-
 class LogicSolver:
     """
     Solver yang menggunakan teknik logika-heuristik.
@@ -43,13 +41,6 @@ class LogicSolver:
                     progress_made = True
                     total_steps += xwing_steps
 
-            # Placeholder untuk Y-Wing jika ingin ditambahkan nanti
-            # if 'ywing' in self.techniques:
-            #     ywing_found, ywing_steps = self._apply_y_wing()
-            #     if ywing_found:
-            #         progress_made = True
-            #         total_steps += ywing_steps
-
             if not progress_made:
                 break
         
@@ -62,7 +53,6 @@ class LogicSolver:
     # --- FUNGSI-FUNGSI PEMBANTU (Helper Functions) ---
     
     def _initialize_candidates(self):
-        # (Fungsi ini tetap sama seperti sebelumnya)
         candidates = {}
         for r in range(9):
             for c in range(9):
@@ -79,7 +69,6 @@ class LogicSolver:
         return candidates
 
     def _update_peers(self, r, c, digit):
-        # (Fungsi ini tetap sama seperti sebelumnya)
         steps = 0
         peers = set()
         for i in range(9):
@@ -97,7 +86,6 @@ class LogicSolver:
         return steps
 
     def _place_digit(self, r, c, digit):
-        # (Fungsi ini tetap sama seperti sebelumnya)
         if self.board[r][c] == 0:
             self.board[r][c] = digit
             steps = self._update_peers(r, c, digit) + 1
@@ -109,7 +97,6 @@ class LogicSolver:
     # --- IMPLEMENTASI TEKNIK LOGIKA ---
 
     def _apply_singles(self):
-        # (Fungsi ini tetap sama seperti sebelumnya)
         steps = 0
         made_change = False
         
@@ -221,7 +208,6 @@ class LogicSolver:
         return made_change, steps
 
     def _apply_x_wing(self):
-        # (Fungsi ini tetap sama seperti sebelumnya)
         steps = 0
         made_change = False
         for digit in range(1, 10):

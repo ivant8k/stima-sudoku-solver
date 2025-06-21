@@ -1,5 +1,3 @@
-# utils.py
-
 def print_board(board):
     """Mencetak papan Sudoku dengan format yang mudah dibaca."""
     for i in range(9):
