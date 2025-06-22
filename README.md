@@ -1,15 +1,18 @@
-# 🧩 Solver Sudoku 
+# Solver Sudoku 
 
-## 👥 Author
+##  Author
 
 | Nama | NIM |
 |------|-----|
 | [Ivant Samuel Silaban] | [13523129] | 
 
+## Latar Belakang Proyek
 
-## 🎯 Fitur Utama
+Proyek ini dikembangkan sebagai tugas akhir untuk mata kuliah IF2211 - Strategi Algoritma. Tujuan utamanya bukan hanya untuk menciptakan solver Sudoku yang fungsional, tetapi untuk menggunakan solver tersebut sebagai alat eksperimen. Eksperimen ini dirancang untuk memvisualisasikan dan menganalisis perbedaan fundamental antara algoritma yang berjalan dalam waktu polinomial (diwakili oleh solver berbasis logika-heuristik) dan algoritma yang berjalan dalam waktu eksponensial (diwakili oleh solver backtracking murni) saat dihadapkan pada masalah NP-Complete seperti Sudoku.
 
-### 🔍 **Solver Logika-Heuristik (Advanced)**
+## Fitur Utama
+
+###  **Solver Logika-Heuristik (Advanced)**
 - **Hidden Singles**: Mencari angka yang hanya bisa ditempatkan di satu posisi dalam baris/kolom/kotak
 - **Naked Singles**: Mencari sel yang hanya memiliki satu kandidat angka
 - **Naked Pairs**: Mengeliminasi kandidat berdasarkan pasangan angka yang saling terkait
@@ -17,13 +20,55 @@
 - **X-Wing**: Teknik advanced untuk puzzle yang sangat sulit
 - **Efisiensi**: Menyelesaikan ~80% puzzle Sudoku standar tanpa backtracking
 
-### ⚡ **Solver Backtracking (Murni)**
+###  **Solver Backtracking (Murni)**
 - **Algoritma rekursif**: Memecahkan puzzle yang tidak bisa diselesaikan dengan logika murni
 - **Batas waktu dan langkah**: Mencegah proses tak terbatas (5 detik, 20 juta langkah)
 - **Pencarian sistematis**: Mencoba semua kombinasi yang valid secara efisien
 - **Optimasi**: Hanya dijalankan untuk puzzle yang sangat sulit
 
-## 📁 Struktur Proyek
+
+## Analisis Performa
+
+### **Keunggulan Pendekatan Perbandingan Langsung**
+1. **Transparansi**: Perbandingan langsung antara dua pendekatan
+2. **Efisiensi**: Solver logika jauh lebih cepat dari backtracking
+3. **Kompleksitas**: Menghindari eksplorasi ruang pencarian yang tidak perlu
+4. **Skalabilitas**: Performa tetap baik untuk puzzle yang sangat sulit
+
+### **Metrik yang Diukur**
+- **Waktu eksekusi** (dalam milidetik)
+- **Jumlah langkah** (estimasi eliminasi kandidat untuk logika, rekursi untuk backtracking)
+- **Status penyelesaian** (Terpecahkan/Macet/Batas Tercapai)
+
+### **Batas Waktu dan Langkah**
+- **Backtracking**: Maksimal 5 detik dan 20 juta langkah rekursif
+- **Logika**: Tidak ada batas, berhenti ketika tidak ada kemajuan
+
+## Persyaratan Sistem
+
+- **Python 3.6+**
+- **Tidak ada dependensi eksternal** - semua implementasi murni Python
+
+## Konsep Algoritma
+
+### **Constraint Satisfaction Problem (CSP)**
+Sudoku adalah contoh klasik CSP dengan:
+- **Variabel**: 81 sel dalam grid 9x9
+- **Domain**: Angka 1-9 untuk setiap sel
+- **Constraints**: Aturan Sudoku (unik dalam baris, kolom, kotak)
+
+### **Heuristik Logika**
+- **Singles**: Menerapkan aturan "jika hanya ada satu pilihan, pilih itu"
+- **Pairs**: Menggunakan informasi tentang kandidat yang saling terkait
+- **X-Wing**: Menerapkan eliminasi berdasarkan pola geometris
+
+### **Backtracking dengan Forward Checking**
+- **Pencarian sistematis** dengan validasi real-time
+- **Pruning** otomatis berdasarkan constraint violation
+- **Efisiensi** melalui pemilihan sel kosong yang optimal
+- **Batas waktu** untuk mencegah proses tak terbatas
+
+## Struktur Proyek
 
 ```
 stima-sudoku-solver/
@@ -37,7 +82,7 @@ stima-sudoku-solver/
 └── README.md               # Dokumentasi ini
 ```
 
-## 🚀 Cara Penggunaan
+## Cara Penggunaan
 
 ### 1. **Menjalankan Perbandingan Langsung**
 ```bash
@@ -49,7 +94,17 @@ Program akan menjalankan semua puzzle dalam `test/puzzles.txt` dengan perbanding
 - **Solver Logika-Heuristik (Advanced)**: Menggunakan semua teknik logika
 - **Solver Backtracking (Murni)**: Algoritma rekursif dengan batas waktu
 
-### 2. **Contoh Output yang Dihasilkan**
+
+### 2. **Contoh puzzle**
+
+File `test/puzzles.txt` berisi 4 kategori puzzle:
+
+1. **Mudah**: Dapat diselesaikan hanya dengan teknik logika dasar
+2. **Sulit**: Membutuhkan teknik X-Wing untuk penyelesaian
+3. **Diabolical**: Tidak dapat diselesaikan dengan logika murni, butuh backtracking
+4. **Kosong**: Papan kosong untuk menguji performa backtracking
+
+### 3. **Contoh Output yang Dihasilkan**
 ```
 ==================== MENGUJI PUZZLE: MUDAH (BISA DISELESAIKAN HANYA DENGAN LOGIKA DASAR) ====================
 Papan Awal:
@@ -231,109 +286,3 @@ Status: Terpecahkan
 Waktu: 1.9377 ms | Langkah: 392 pemanggilan rekursif
 ======================================================================
 ```
-
-## 🧪 Kumpulan Puzzle Test
-
-File `test/puzzles.txt` berisi 4 kategori puzzle:
-
-1. **Mudah**: Dapat diselesaikan hanya dengan teknik logika dasar
-2. **Sulit**: Membutuhkan teknik X-Wing untuk penyelesaian
-3. **Diabolical**: Tidak dapat diselesaikan dengan logika murni, butuh backtracking
-4. **Kosong**: Papan kosong untuk menguji performa backtracking
-
-## 🔧 Implementasi Teknik
-
-### **Hidden & Naked Singles**
-```python
-# Mencari sel dengan hanya satu kandidat
-if len(cand_set) == 1:
-    digit = cand_set.pop()
-    self._place_digit(r, c, digit)
-```
-
-### **Naked Pairs**
-```python
-# Mencari dua sel dengan kandidat yang sama
-if len(pair_cells) == 2:
-    # Eliminasi kandidat dari sel lain dalam unit yang sama
-```
-
-### **X-Wing**
-```python
-# Mencari pola X-Wing dalam baris/kolom
-if cand_cols[i] == cand_cols[j]:
-    # Eliminasi kandidat dari baris/kolom lain
-```
-
-### **Backtracking dengan Batas**
-```python
-def _backtrack(self):
-    # Pemeriksaan batas waktu dan langkah
-    if self.recursion_steps > self.step_limit:
-        return "limit_reached"
-    if time.perf_counter() - self.start_time > self.time_limit_sec:
-        return "limit_reached"
-    
-    empty_pos = self._find_empty()
-    if not empty_pos:
-        return True  # Puzzle terpecahkan
-    
-    for digit in range(1, 10):
-        if self._is_valid(digit, empty_pos):
-            # Coba tempatkan digit
-            if self._backtrack():
-                return True
-            # Backtrack jika gagal
-```
-
-## 📊 Analisis Performa
-
-### **Keunggulan Pendekatan Perbandingan Langsung**
-1. **Transparansi**: Perbandingan langsung antara dua pendekatan
-2. **Efisiensi**: Solver logika jauh lebih cepat dari backtracking
-3. **Kompleksitas**: Menghindari eksplorasi ruang pencarian yang tidak perlu
-4. **Skalabilitas**: Performa tetap baik untuk puzzle yang sangat sulit
-
-### **Metrik yang Diukur**
-- **Waktu eksekusi** (dalam milidetik)
-- **Jumlah langkah** (estimasi eliminasi kandidat untuk logika, rekursi untuk backtracking)
-- **Status penyelesaian** (Terpecahkan/Macet/Batas Tercapai)
-
-### **Batas Waktu dan Langkah**
-- **Backtracking**: Maksimal 5 detik dan 20 juta langkah rekursif
-- **Logika**: Tidak ada batas, berhenti ketika tidak ada kemajuan
-
-## 🛠️ Persyaratan Sistem
-
-- **Python 3.6+**
-- **Tidak ada dependensi eksternal** - semua implementasi murni Python
-
-## 🎓 Konsep Algoritma
-
-### **Constraint Satisfaction Problem (CSP)**
-Sudoku adalah contoh klasik CSP dengan:
-- **Variabel**: 81 sel dalam grid 9x9
-- **Domain**: Angka 1-9 untuk setiap sel
-- **Constraints**: Aturan Sudoku (unik dalam baris, kolom, kotak)
-
-### **Heuristik Logika**
-- **Singles**: Menerapkan aturan "jika hanya ada satu pilihan, pilih itu"
-- **Pairs**: Menggunakan informasi tentang kandidat yang saling terkait
-- **X-Wing**: Menerapkan eliminasi berdasarkan pola geometris
-
-### **Backtracking dengan Forward Checking**
-- **Pencarian sistematis** dengan validasi real-time
-- **Pruning** otomatis berdasarkan constraint violation
-- **Efisiensi** melalui pemilihan sel kosong yang optimal
-- **Batas waktu** untuk mencegah proses tak terbatas
-
-## 🤝 Kontribusi
-
-Proyek ini dikembangkan sebagai bagian dari mata kuliah **Strategi Algoritma** untuk mendemonstrasikan:
-- Implementasi algoritma constraint satisfaction
-- Perbandingan performa antara pendekatan logika dan backtracking
-- Analisis kompleksitas algoritma
-- Optimasi performa melalui hybrid approach
-
-Dan proyek ini dibuat sebagai pendukung makalah.
-
