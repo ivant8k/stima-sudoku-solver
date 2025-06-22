@@ -1,15 +1,15 @@
-# 🧩 Solver Sudoku 
+# Solver Sudoku 
 
-## 👥 Author
+##  Author
 
 | Nama | NIM |
 |------|-----|
 | [Ivant Samuel Silaban] | [13523129] | 
 
 
-## 🎯 Fitur Utama
+## Fitur Utama
 
-### 🔍 **Solver Logika-Heuristik (Advanced)**
+###  **Solver Logika-Heuristik (Advanced)**
 - **Hidden Singles**: Mencari angka yang hanya bisa ditempatkan di satu posisi dalam baris/kolom/kotak
 - **Naked Singles**: Mencari sel yang hanya memiliki satu kandidat angka
 - **Naked Pairs**: Mengeliminasi kandidat berdasarkan pasangan angka yang saling terkait
@@ -17,13 +17,13 @@
 - **X-Wing**: Teknik advanced untuk puzzle yang sangat sulit
 - **Efisiensi**: Menyelesaikan ~80% puzzle Sudoku standar tanpa backtracking
 
-### ⚡ **Solver Backtracking (Murni)**
+###  **Solver Backtracking (Murni)**
 - **Algoritma rekursif**: Memecahkan puzzle yang tidak bisa diselesaikan dengan logika murni
 - **Batas waktu dan langkah**: Mencegah proses tak terbatas (5 detik, 20 juta langkah)
 - **Pencarian sistematis**: Mencoba semua kombinasi yang valid secara efisien
 - **Optimasi**: Hanya dijalankan untuk puzzle yang sangat sulit
 
-## 📁 Struktur Proyek
+## Struktur Proyek
 
 ```
 stima-sudoku-solver/
@@ -37,7 +37,7 @@ stima-sudoku-solver/
 └── README.md               # Dokumentasi ini
 ```
 
-## 🚀 Cara Penggunaan
+## Cara Penggunaan
 
 ### 1. **Menjalankan Perbandingan Langsung**
 ```bash
@@ -232,7 +232,7 @@ Waktu: 1.9377 ms | Langkah: 392 pemanggilan rekursif
 ======================================================================
 ```
 
-## 🧪 Kumpulan Puzzle Test
+## Kumpulan Puzzle Test
 
 File `test/puzzles.txt` berisi 4 kategori puzzle:
 
@@ -303,12 +303,12 @@ def _backtrack(self):
 - **Backtracking**: Maksimal 5 detik dan 20 juta langkah rekursif
 - **Logika**: Tidak ada batas, berhenti ketika tidak ada kemajuan
 
-## 🛠️ Persyaratan Sistem
+## Persyaratan Sistem
 
 - **Python 3.6+**
 - **Tidak ada dependensi eksternal** - semua implementasi murni Python
 
-## 🎓 Konsep Algoritma
+## Konsep Algoritma
 
 ### **Constraint Satisfaction Problem (CSP)**
 Sudoku adalah contoh klasik CSP dengan:
@@ -327,7 +327,7 @@ Sudoku adalah contoh klasik CSP dengan:
 - **Efisiensi** melalui pemilihan sel kosong yang optimal
 - **Batas waktu** untuk mencegah proses tak terbatas
 
-## 🤝 Kontribusi
+## Kontribusi
 
 Proyek ini dikembangkan sebagai bagian dari mata kuliah **Strategi Algoritma** untuk mendemonstrasikan:
 - Implementasi algoritma constraint satisfaction
